@@ -20,11 +20,19 @@
     <v-spacer></v-spacer>
 
     <v-btn
-      v-if="!loading"
+      v-if="!loading && !walletAddress"
       color="green"
       @click="loginWithArcana()"
     >
       Login With Arcana
+    </v-btn>
+
+    <v-btn
+      v-if="!loading"
+      color="green"
+      @click="connectToBlockchain()"
+    >
+      {{ formatWalletAddress(walletAddress) }}
     </v-btn>
 
     <v-btn
@@ -38,6 +46,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { getAuthInstance } from '@/lib/auth'
 
 export default {
@@ -45,7 +54,13 @@ export default {
   data: () => ({
     loading: false
   }),
+  computed: mapGetters(['walletAddress']),
   methods: {
+    ...mapActions(['connectToBlockchain']),
+    formatWalletAddress(address) {
+      if(address) return address.slice(0, 5) + "..." + address.slice(37, 42)
+      else return "Connect Wallet"
+    },
     async loginWithArcana() {
       try {
         this.loading = true
