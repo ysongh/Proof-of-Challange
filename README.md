@@ -1,4 +1,4 @@
-# Proof Of Challange
+# Proof Of Challenge
 
 ## Project setup
 ```
