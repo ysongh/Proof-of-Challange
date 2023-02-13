@@ -56,7 +56,7 @@ export default {
   }),
   computed: mapGetters(['walletAddress']),
   methods: {
-    ...mapActions(['connectToBlockchain']),
+    ...mapActions(['connectToBlockchain', 'updateWalletAddress']),
     formatWalletAddress(address) {
       if(address) return address.slice(0, 5) + "..." + address.slice(37, 42)
       else return "Connect Wallet"
@@ -68,6 +68,11 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const a = await getAuthInstance()
         // Provider available at a.provider
+        console.log(a)
+
+        const accounts = await a.provider.request({ method: 'eth_accounts' })
+        console.log(accounts)
+        this.updateWalletAddress(accounts[0])
 
          this.loading = false
       } catch (error) {

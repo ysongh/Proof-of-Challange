@@ -23,6 +23,13 @@ export default new Vuex.Store({
       } catch(error) {
         console.log(error)
       }
+    },
+    async updateWalletAddress({ commit }, walletAddress) {
+      try{
+        commit('setWalletAddress', walletAddress)
+      } catch(error) {
+        console.log(error)
+      }
     }
   },
   modules: {
