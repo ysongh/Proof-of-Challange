@@ -32,11 +32,11 @@
             label="Description"
             v-model="description"
           ></v-textarea>
-          
+
           <v-btn
             v-if="!loading"
             class="mb-4"
-            @click="uploadToIPFS()"
+            @click="sendChallenge()"
             block
             color="primary"
             :disabled=isDisabled
@@ -51,12 +51,16 @@
             ></v-progress-circular>
           </div>
         </form>
+        <p>{{ url }}</p>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import axios from "axios"
+
+import { PINATA_APIKEY, PINATA_SECRETAPIKEY } from '../keys'
 
 export default {
   name: "SendChallenge",
@@ -65,6 +69,7 @@ export default {
     title: "",
     description: "",
     to: "",
+    url: ""
   }),
   computed: {
     isDisabled() {
@@ -75,6 +80,35 @@ export default {
     async sendChallenge() {
       try{
         console.log(this.title, this.description, this.to)
+
+        const dateNow = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`
+        const challengeData = JSON.stringify({ 
+          to: this.to,
+          title: this.title,
+          description: this.description,
+          dateNow
+        })
+        const prepareToUpload = new File(
+          [JSON.stringify(
+            {
+              challengeData
+            },
+            null,
+            1
+          )], 'metadata.json');
+        let data = new FormData()
+        data.append('file', prepareToUpload)
+        const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
+          maxContentLength: "Infinity",
+          headers: {
+            "Content-Type": 'multipart/form-data',
+            pinata_api_key: PINATA_APIKEY, 
+            pinata_secret_api_key: PINATA_SECRETAPIKEY,
+          }
+        })
+        let url = "https://gateway.pinata.cloud/ipfs/" + res.data.IpfsHash
+        console.log(url)
+        this.url = url
       } catch(error) {
         console.log(error)
         this.loading = false
