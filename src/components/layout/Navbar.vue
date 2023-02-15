@@ -17,10 +17,6 @@
       Send Challenge
     </router-link>
 
-    <router-link :to="{ path: '/about'}" class="nav-link">
-      About
-    </router-link>
-
     <v-spacer></v-spacer>
 
     <v-btn
