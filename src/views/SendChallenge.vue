@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import axios from "axios"
 
 import { PINATA_APIKEY, PINATA_SECRETAPIKEY } from '../keys'
@@ -72,6 +73,7 @@ export default {
     url: ""
   }),
   computed: {
+    ...mapGetters(['contractPOC']),
     isDisabled() {
       return !this.title || !this.description || !this.to;
     },
@@ -109,6 +111,10 @@ export default {
         let url = "https://gateway.pinata.cloud/ipfs/" + res.data.IpfsHash
         console.log(url)
         this.url = url
+
+        const transaction = await this.contractPOC.sendChallenge(url, this.to)
+        const tx = await transaction.wait()
+        console.log(tx)
       } catch(error) {
         console.log(error)
         this.loading = false
