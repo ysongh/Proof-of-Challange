@@ -10,9 +10,15 @@
         </v-card-subtitle>
         <v-card-subtitle>
           {{ challange.dateNow }}
+          <p>To {{ challange.to }}</p>
         </v-card-subtitle>
         <v-card-actions>
-          <v-btn>Accept Challange</v-btn>
+          <v-btn v-if="!challange.isChallengeAccept" @click="acceptChallenge()">
+            Accept Challange
+          </v-btn>
+          <v-btn v-else disabled>
+            Accepted
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-sheet>
@@ -30,6 +36,18 @@ export default {
     challange: {}
   }),
   computed: mapGetters(['contractPOC']),
+  methods: {
+    async acceptChallenge() {
+      try{
+        console.log(this.$route.params.id.toString())
+        const transaction = await this.contractPOC.acceptChallenge(+this.$route.params.id - 1)
+        const tx = await transaction.wait()
+        console.log(tx)
+      } catch(error) {
+        console.log(error)
+      }
+    }
+  },
   async created() {
     try{
       let contractData = await this.contractPOC.getChallenges()

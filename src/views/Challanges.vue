@@ -28,13 +28,13 @@
                   {{ challange.id }} - {{ challange.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  {{ challange.description }}
+                  To {{ challange.to }}
                 </v-card-subtitle>
                 <v-card-subtitle>
                   {{ challange.dateNow }}
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-btn @click="goToDetailpage(challange.id)">Click me</v-btn>
+                  <v-btn @click="goToDetailpage(challange.id)">View</v-btn>
                 </v-card-actions>
               </v-card>
             </v-sheet>
@@ -86,6 +86,7 @@ export default {
         newData.title = toObject.title
         newData.description = toObject.description
         newData.to = toObject.to
+        newData.from = toObject.from
         newChallanges.push(newData)
       }
       this.challanges = newChallanges
