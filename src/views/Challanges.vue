@@ -34,7 +34,7 @@
                   {{ challange.dateNow }}
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-btn>Click me</v-btn>
+                  <v-btn @click="goToDetailpage(challange.id)">Click me</v-btn>
                 </v-card-actions>
               </v-card>
             </v-sheet>
@@ -66,6 +66,11 @@ export default {
     challanges: []
   }),
   computed: mapGetters(['contractPOC']),
+  methods: {
+    goToDetailpage(id) {
+      this.$router.push('/challange-detail/' + id);
+    }
+  },
   async created() {
     try{
       let contractData = await this.contractPOC.getChallenges()
