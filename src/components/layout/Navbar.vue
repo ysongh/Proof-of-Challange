@@ -19,6 +19,8 @@
 
     <v-spacer></v-spacer>
 
+    <v-badge v-if="this.chainName" :content="this.chainName" inline></v-badge>
+
     <v-btn
       v-if="!loading && !walletAddress"
       color="green"
@@ -54,7 +56,7 @@ export default {
   data: () => ({
     loading: false
   }),
-  computed: mapGetters(['walletAddress']),
+  computed: mapGetters(['walletAddress', 'chainName']),
   methods: {
     ...mapActions(['connectToBlockchain', 'updateWalletAddress']),
     formatWalletAddress(address) {

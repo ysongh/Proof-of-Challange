@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { ethers } from 'ethers'
 
-import { CONTRACT_ADDRESS }  from '../keys'
+import { MANTLE_CONTRACT_ADDRESS }  from '../keys'
 import ProofOfChallenge from '../../artifacts/contracts/ProofOfChallenge.sol/ProofOfChallenge.json'
 
 Vue.use(Vuex)
@@ -10,15 +10,18 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     walletAddress: "",
-    contractPOC: null
+    contractPOC: null,
+    chainName: ""
   },
   getters: {
     walletAddress: state => state.walletAddress,
-    contractPOC: state => state.contractPOC
+    contractPOC: state => state.contractPOC,
+    chainName: state => state.chainName
   },
   mutations: {
     setWalletAddress: (state, walletAddress) => (state.walletAddress = walletAddress),
     setContract: (state, contractPOC) => (state.contractPOC = contractPOC),
+    setChainName: (state, chainName) => (state.chainName = chainName),
   },
   actions: {
     async connectToBlockchain({ commit }) {
@@ -28,11 +31,18 @@ export default new Vuex.Store({
         commit('setWalletAddress', account)
 
         const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const signer = provider.getSigner()
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, ProofOfChallenge.abi, signer)
-        commit('setContract', contract)
-        console.log(contract)
 
+        const { chainId } = await provider.getNetwork();
+        console.log(chainId)
+
+        const signer = provider.getSigner()
+
+        if(chainId === 5001){
+          const contract = new ethers.Contract(MANTLE_CONTRACT_ADDRESS, ProofOfChallenge.abi, signer)
+          commit('setContract', contract)
+          console.log(contract)
+          commit('setChainName', "Mantle Testnet")
+        }
       } catch(error) {
         console.log(error)
       }
