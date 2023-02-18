@@ -7,18 +7,18 @@
       color="deep-purple-accent-4"
       align-tabs="center"
     >
-      <v-tab :value="1">Challanges</v-tab>
-      <v-tab :value="2">Completed</v-tab>
+      <v-tab :value="1">Current</v-tab>
+      <v-tab :value="2">Accepted</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="1">
-        <h1>Challanges</h1>
+        <h1>Current</h1>
 
         <v-row>
           <v-col
             v-bind:key="challange.dateNow"
-            v-for="challange of challanges"
+            v-for="challange of currentChallanges"
             cols="12"
             sm="6"
           >
@@ -43,7 +43,33 @@
       </v-tab-item>
 
       <v-tab-item key="2">
-        <h1>Completed</h1>
+        <h1>Accepted</h1>
+
+        <v-row>
+          <v-col
+            v-bind:key="challange.dateNow"
+            v-for="challange of acceptedChallanges"
+            cols="12"
+            sm="6"
+          >
+            <v-sheet class="ma-2 pa-2">
+              <v-card>
+                <v-card-title>
+                  {{ challange.id }} - {{ challange.title }}
+                </v-card-title>
+                <v-card-subtitle>
+                  To {{ challange.to }}
+                </v-card-subtitle>
+                <v-card-subtitle>
+                  {{ challange.dateNow }}
+                </v-card-subtitle>
+                <v-card-actions>
+                  <v-btn @click="goToDetailpage(challange.id)">View</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-sheet>
+          </v-col>
+        </v-row>
       </v-tab-item>
     </v-tabs-items>
 
@@ -63,9 +89,10 @@ export default {
   },
   data: () => ({
     tab: null,
-    challanges: []
+    currentChallanges: [],
+    acceptedChallanges: []
   }),
-  computed: mapGetters(['contractPOC']),
+  computed: mapGetters(['contractPOC', 'walletAddress']),
   methods: {
     goToDetailpage(id) {
       this.$router.push('/challange-detail/' + id);
@@ -74,7 +101,8 @@ export default {
   async created() {
     try{
       let contractData = await this.contractPOC.getChallenges()
-      let newChallanges = [];
+      let newCurrentChallanges = [];
+      let newAcceptedChallanges = [];
       for(let i = 0; i < contractData.length; i++){
         let newData = {};
         let data = await fetch(contractData[i].cid)
@@ -87,9 +115,11 @@ export default {
         newData.description = toObject.description
         newData.to = toObject.to
         newData.from = toObject.from
-        newChallanges.push(newData)
+        if(newData.isChallengeAccept) newAcceptedChallanges.push(newData)
+        else newCurrentChallanges.push(newData)
       }
-      this.challanges = newChallanges
+      this.acceptedChallanges = newAcceptedChallanges
+      this.currentChallanges = newCurrentChallanges
     } catch(error) {
       console.log(error)
       this.loading = false
