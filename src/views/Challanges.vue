@@ -17,18 +17,21 @@
 
         <v-row>
           <v-col
-            v-for="n in 3"
-            :key="n"
+            v-bind:key="challange.dateNow"
+            v-for="challange of challanges"
             cols="12"
             sm="6"
           >
             <v-sheet class="ma-2 pa-2">
               <v-card>
                 <v-card-title>
-                  Test
+                  {{ challange.id }} - {{ challange.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  Testing
+                  {{ challange.description }}
+                </v-card-subtitle>
+                <v-card-subtitle>
+                  {{ challange.dateNow }}
                 </v-card-subtitle>
                 <v-card-actions>
                   <v-btn>Click me</v-btn>
@@ -48,16 +51,43 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Challanges',
   components: {
-    HelloWorld
+    HelloWorld,
   },
   data: () => ({
     tab: null,
+    challanges: []
   }),
+  computed: mapGetters(['contractPOC']),
+  async created() {
+    try{
+      let contractData = await this.contractPOC.getChallenges()
+      let newChallanges = [];
+      for(let i = 0; i < contractData.length; i++){
+        let newData = {};
+        let data = await fetch(contractData[i].cid)
+        data = await data.json();
+        const toObject = await JSON.parse(data.challengeData)
+        newData.id = contractData[i].id.toString()
+        newData.isChallengeAccept = contractData[i].isChallengeAccept
+        newData.dateNow = toObject.dateNow
+        newData.title = toObject.title
+        newData.description = toObject.description
+        newData.to = toObject.to
+        newChallanges.push(newData)
+      }
+      this.challanges = newChallanges
+    } catch(error) {
+      console.log(error)
+      this.loading = false
+    }
+  }
 }
 </script>
