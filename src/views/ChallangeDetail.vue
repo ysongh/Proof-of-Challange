@@ -35,7 +35,7 @@ export default {
     tab: null,
     challange: {}
   }),
-  computed: mapGetters(['contractPOC']),
+  computed: mapGetters(['contractPOC', "walletAddress"]),
   methods: {
     async acceptChallenge() {
       try{
@@ -46,7 +46,25 @@ export default {
       } catch(error) {
         console.log(error)
       }
-    }
+    },
+    async signMessage() {
+      try{
+        const { sig } = await a.provider.request({
+        method: 'eth_signTransaction',
+        params: [
+          {
+            from: this.walletAddress, // sender account address
+            gasPrice: 0,
+            to: 'receiver', // receiver account address
+            value: '0x0de0b6b3a7640000',
+          },
+        ],
+      })
+      console.log({ sig })
+      } catch(error) {
+        console.log(error)
+      }
+    },
   },
   async created() {
     try{
