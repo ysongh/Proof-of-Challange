@@ -13,6 +13,10 @@
       Home
     </router-link>
 
+    <router-link :to="{ path: '/challenges'}" class="nav-link">
+      Challenges
+    </router-link>
+
     <router-link :to="{ path: '/send-challenge'}" class="nav-link">
       Send Challenge
     </router-link>
