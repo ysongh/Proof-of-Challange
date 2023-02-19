@@ -1,8 +1,7 @@
 <template>
   <v-app-bar
     app
-    color="primary"
-    dark
+    color="#876a96"
   >
     
     <router-link :to="{ path: '/'}" class="nav-link">
@@ -27,15 +26,16 @@
 
     <v-btn
       v-if="!loading && !walletAddress"
-      color="green"
+      color="#d7c1e0"
       @click="loginWithArcana()"
+      class="mr-1"
     >
       Login With Arcana
     </v-btn>
 
     <v-btn
       v-if="!loading"
-      color="green"
+      color="#d7c1e0"
       @click="connectToBlockchain()"
     >
       {{ formatWalletAddress(walletAddress) }}
@@ -43,7 +43,7 @@
 
     <v-btn
       v-else
-      color="green"
+      color="#d7c1e0"
       disabled
     >
       Loading...

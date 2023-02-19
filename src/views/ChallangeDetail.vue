@@ -13,10 +13,10 @@
           <p>To {{ challange.to }}</p>
         </v-card-subtitle>
         <v-card-actions>
-          <v-btn v-if="!challange.isChallengeAccept" @click="acceptChallenge()">
+          <v-btn color="#876a96" v-if="!challange.isChallengeAccept" @click="acceptChallenge()">
             Accept Challange
           </v-btn>
-          <v-btn v-else disabled>
+          <v-btn color="#876a96" v-else disabled>
             Accepted
           </v-btn>
         </v-card-actions>

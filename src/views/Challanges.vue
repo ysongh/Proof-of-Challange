@@ -34,7 +34,7 @@
                   {{ challange.dateNow }}
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-btn @click="goToDetailpage(challange.id)">View</v-btn>
+                  <v-btn color="#876a96" @click="goToDetailpage(challange.id)">View</v-btn>
                 </v-card-actions>
               </v-card>
             </v-sheet>
@@ -64,7 +64,7 @@
                   {{ challange.dateNow }}
                 </v-card-subtitle>
                 <v-card-actions>
-                  <v-btn @click="goToDetailpage(challange.id)">View</v-btn>
+                  <v-btn color="#876a96" @click="goToDetailpage(challange.id)">View</v-btn>
                 </v-card-actions>
               </v-card>
             </v-sheet>

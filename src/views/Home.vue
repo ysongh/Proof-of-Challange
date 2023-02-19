@@ -6,15 +6,15 @@
     <p>
       Using Proof of Challenge NFT for proof so that your friends are committed to the challenge
     </p>
-    <v-btn v-if="!walletAddress" @click="connectToBlockchain()">
+    <v-btn color="#d7c1e0" v-if="!walletAddress" @click="connectToBlockchain()">
       Connect Wallet
     </v-btn>
     <div v-else>
-      <v-btn as="router-link" to="/send-challenge">
+      <v-btn class="mb-2" color="#d7c1e0" as="router-link" to="/send-challenge">
         Send Challenge
       </v-btn>
       <br>
-      <v-btn as="router-link" to="/challenges">
+      <v-btn color="#876a96" as="router-link" to="/challenges">
         View Challenges
       </v-btn>
     </div>
@@ -32,3 +32,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .mb-2 { margin-bottom: .7rem !important ;}
+</style>
