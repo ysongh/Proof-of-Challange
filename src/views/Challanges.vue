@@ -28,7 +28,7 @@
                   {{ challange.id }} - {{ challange.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  To {{ challange.to }}
+                  To {{ formatWalletAddress(challange.to) }}
                 </v-card-subtitle>
                 <v-card-subtitle>
                   {{ challange.dateNow }}
@@ -59,7 +59,7 @@
                   {{ challange.id }} - {{ challange.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  To {{ challange.to }}
+                  To {{ formatWalletAddress(challange.to) }}
                 </v-card-subtitle>
                 <v-card-subtitle>
                   {{ challange.dateNow }}
@@ -101,7 +101,11 @@ export default {
   methods: {
     goToDetailpage(id) {
       this.$router.push('/challange-detail/' + id);
-    }
+    },
+    formatWalletAddress(address) {
+      if(address) return address.slice(0, 5) + "..." + address.slice(37, 42)
+      else return ""
+    },
   },
   async created() {
     try{

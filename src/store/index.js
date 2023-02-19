@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { ethers } from 'ethers'
 
-import { MANTLE_CONTRACT_ADDRESS }  from '../keys'
+import { MANTLE_CONTRACT_ADDRESS, FILECOIN_CONTRACT_ADDRESS }  from '../keys'
 import ProofOfChallenge from '../../artifacts/contracts/ProofOfChallenge.sol/ProofOfChallenge.json'
 
 Vue.use(Vuex)
@@ -36,12 +36,18 @@ export default new Vuex.Store({
         console.log(chainId)
 
         const signer = provider.getSigner()
-
+        
         if(chainId === 5001){
           const contract = new ethers.Contract(MANTLE_CONTRACT_ADDRESS, ProofOfChallenge.abi, signer)
           commit('setContract', contract)
           console.log(contract)
           commit('setChainName', "Mantle Testnet")
+        }
+        else if(chainId === 3141){
+          const contract = new ethers.Contract(FILECOIN_CONTRACT_ADDRESS, ProofOfChallenge.abi, signer)
+          commit('setContract', contract)
+          console.log(contract)
+          commit('setChainName', "Filecoin Testnet")
         }
       } catch(error) {
         console.log(error)

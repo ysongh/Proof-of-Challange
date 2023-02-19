@@ -10,7 +10,7 @@
         </v-card-subtitle>
         <v-card-subtitle>
           {{ challange.dateNow }}
-          <p>To {{ challange.to }}</p>
+          <p>To {{ formatWalletAddress(challange.to) }}</p>
         </v-card-subtitle>
         <v-card-actions>
           <v-btn color="#876a96" v-if="!challange.isChallengeAccept" @click="acceptChallenge()">
@@ -71,6 +71,10 @@ export default {
       } catch(error) {
         console.log(error)
       }
+    },
+    formatWalletAddress(address) {
+      if(address) return address.slice(0, 5) + "..." + address.slice(37, 42)
+      else return ""
     },
   },
   async created() {
