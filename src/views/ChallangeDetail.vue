@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-sheet class="ma-2 pa-2">
-      <v-card>
+      <v-card v-if="!loading">
         <v-card-title>
           {{ challange.title }}
         </v-card-title>
@@ -21,6 +21,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+      <Spinner v-else />
     </v-sheet>
 
   </v-container>
@@ -29,12 +30,18 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import Spinner from '../components/common/Spinner.vue'
+
 export default {
   name: 'ChallangeDetail',
   data: () => ({
     tab: null,
-    challange: {}
+    challange: {},
+    loading: false
   }),
+  components: {
+    Spinner
+  },
   computed: mapGetters(['contractPOC', "walletAddress"]),
   methods: {
     async acceptChallenge() {
@@ -68,6 +75,7 @@ export default {
   },
   async created() {
     try{
+      this.loading = true
       let contractData = await this.contractPOC.getChallenges()
       console.log(contractData, contractData[this.$route.params.id - 1])
       let newData = {};
@@ -80,6 +88,7 @@ export default {
       newData.description = toObject.description
       newData.to = toObject.to
       this.challange = newData
+      this.loading = false
     } catch(error) {
       console.log(error)
       this.loading = false

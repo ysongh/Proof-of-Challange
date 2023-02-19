@@ -15,7 +15,7 @@
       <v-tab-item key="1">
         <h1>Current</h1>
 
-        <v-row>
+        <v-row v-if="!loading">
           <v-col
             v-bind:key="challange.dateNow"
             v-for="challange of currentChallanges"
@@ -40,6 +40,7 @@
             </v-sheet>
           </v-col>
         </v-row>
+        <Spinner v-else />
       </v-tab-item>
 
       <v-tab-item key="2">
@@ -79,6 +80,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import Spinner from '../components/common/Spinner.vue'
+
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 
@@ -86,8 +89,10 @@ export default {
   name: 'Challanges',
   components: {
     HelloWorld,
+    Spinner
   },
   data: () => ({
+    loading: false,
     tab: null,
     currentChallanges: [],
     acceptedChallanges: []
@@ -100,6 +105,7 @@ export default {
   },
   async created() {
     try{
+      this.loading = true
       let contractData = await this.contractPOC.getChallenges()
       let newCurrentChallanges = [];
       let newAcceptedChallanges = [];
@@ -117,6 +123,7 @@ export default {
         newData.from = toObject.from
         if(newData.isChallengeAccept) newAcceptedChallanges.push(newData)
         else newCurrentChallanges.push(newData)
+        this.loading = false
       }
       this.acceptedChallanges = newAcceptedChallanges
       this.currentChallanges = newCurrentChallanges
