@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>
+    <h1 class="mt-10">
       Hold your friends accountable
     </h1>
     <p>

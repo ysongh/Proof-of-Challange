@@ -1,7 +1,5 @@
 <template>
   <v-container>
-    <HelloWorld msg="Proof Of Challange"/>
-
     <v-tabs
       v-model="tab"
       color="deep-purple-accent-4"
@@ -14,7 +12,7 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item key="1">
-        <h1>Current</h1>
+        <h1 class="mb-3">Current</h1>
         <v-row v-if="!loading">
           <v-col
             v-bind:key="challange.dateNow"
@@ -44,7 +42,7 @@
       </v-tab-item>
 
       <v-tab-item key="2">
-        <h1>Accepted</h1>
+        <h1 class="mb-3">Accepted</h1>
         <v-row>
           <v-col
             v-bind:key="challange.dateNow"
@@ -73,7 +71,7 @@
       </v-tab-item>
 
       <v-tab-item key="3">
-        <h1>Sent</h1>
+        <h1 class="mb-3">Sent</h1>
         <v-row>
           <v-col
             v-bind:key="challange.dateNow"
@@ -110,13 +108,9 @@ import { mapGetters } from 'vuex'
 
 import Spinner from '../components/common/Spinner.vue'
 
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Challanges',
   components: {
-    HelloWorld,
     Spinner
   },
   data: () => ({
