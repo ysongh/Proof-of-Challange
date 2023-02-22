@@ -1,7 +1,8 @@
 <template>
   <v-container>
-    <v-sheet class="ma-2 pa-2">
-      <v-card v-if="!loading">
+    <v-sheet>
+      <v-card v-if="!loading" class="mx-auto my-5 pt-3" maxWidth="600px">
+        <p class="mr-3 mb-0 text-right">{{ challange.dateNow }}</p>
         <v-card-title>
           {{ challange.title }}
         </v-card-title>
@@ -9,8 +10,8 @@
           {{ challange.description }}
         </v-card-subtitle>
         <v-card-subtitle>
-          {{ challange.dateNow }}
-          <p>To {{ formatWalletAddress(challange.to) }}</p>
+          <p class="mb-0">To {{ formatWalletAddress(challange.to) }}</p>
+          <p>From {{ formatWalletAddress(challange.from) }}</p>
         </v-card-subtitle>
         <v-card-actions>
           <v-btn color="#876a96" v-if="!challange.isChallengeAccept" @click="acceptChallenge()">
@@ -91,6 +92,7 @@ export default {
       newData.title = toObject.title
       newData.description = toObject.description
       newData.to = toObject.to
+      newData.from = contractData[this.$route.params.id - 1].from
       this.challange = newData
       this.loading = false
     } catch(error) {
